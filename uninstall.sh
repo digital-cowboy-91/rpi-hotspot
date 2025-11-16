@@ -7,6 +7,9 @@ echo "========================================"
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+echo "[*] Uninstalling log maintenance..."
+bash "$REPO_DIR/logs/uninstall.sh"
+
 echo "[*] Uninstalling web UI..."
 bash "$REPO_DIR/web/uninstall.sh"
 

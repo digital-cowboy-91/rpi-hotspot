@@ -3,7 +3,7 @@
 # Removes hotspot-init, hotspot-control, and hotspot-init.service
 
 set -e
-LOG="/var/log/hotspot-uninstall.log"
+LOG="/var/log/rpi-hotspot/hotspot-uninstall.log"
 
 echo "[$(date)] hotspot/uninstall.sh starting" >> "$LOG"
 
@@ -19,10 +19,10 @@ rm -f /usr/local/bin/hotspot-init
 rm -f /usr/local/bin/hotspot-control
 
 # Remove logs
-rm -f /var/log/hotspot-setup.log
-rm -f /var/log/hotspot-uninstall.log
-rm -f /var/log/hotspot-init.log
-rm -f /var/log/hotspot-control.log
+rm -f /var/log/rpi-hotspot/hotspot-setup.log
+rm -f /var/log/rpi-hotspot/hotspot-uninstall.log
+rm -f /var/log/rpi-hotspot/hotspot-init.log
+rm -f /var/log/rpi-hotspot/hotspot-control.log
 
 # Remove NM connection if exists
 nmcli connection delete Hotspot 2>/dev/null || true

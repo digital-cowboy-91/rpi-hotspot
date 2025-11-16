@@ -2,7 +2,7 @@
 # hotspot/hotspot-init.sh
 # Create or update the minimal NetworkManager Hotspot profile.
 
-LOG="/var/log/hotspot-init.log"
+LOG="/var/log/rpi-hotspot/hotspot-init.log"
 echo "[$(date)] Initializing Hotspot profile" >> "$LOG"
 
 nmcli connection show Hotspot >/dev/null 2>&1

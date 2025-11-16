@@ -5,7 +5,7 @@
 TABLE="hotspot_portal"
 IFACE="wlan0"
 PORTAL_IP="192.168.100.1"
-LOG="/var/log/hotspot-portal.log"
+LOG="/var/log/rpi-hotspot/hotspot-portal.log"
 
 echo "[$(date)] portal command: $1" >> "$LOG"
 

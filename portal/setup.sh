@@ -3,7 +3,7 @@
 # Installs portal.sh + dispatcher.sh
 
 set -e
-LOG="/var/log/portal-setup.log"
+LOG="/var/log/rpi-hotspot/portal-setup.log"
 
 echo "[$(date)] portal/setup.sh starting" >> "$LOG"
 

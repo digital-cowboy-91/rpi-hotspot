@@ -3,7 +3,7 @@
 # Removes the provisioning web UI and its systemd service
 
 set -e
-LOG="/var/log/web-uninstall.log"
+LOG="/var/log/rpi-hotspot/web-uninstall.log"
 
 echo "[$(date)] web/uninstall.sh starting" >> "$LOG"
 
@@ -20,8 +20,8 @@ systemctl daemon-reload
 rm -f /usr/local/bin/hotspot-web.py
 
 # Remove logs
-rm -f /var/log/web-setup.log
-rm -f /var/log/web-uninstall.log
-rm -f /var/log/hotspot-web.log
+rm -f /var/log/rpi-hotspot/web-setup.log
+rm -f /var/log/rpi-hotspot/web-uninstall.log
+rm -f /var/log/rpi-hotspot/hotspot-web.log
 
 echo "[$(date)] web/uninstall.sh completed" >> "$LOG"

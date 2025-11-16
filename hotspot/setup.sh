@@ -3,7 +3,7 @@
 # Installs hotspot-init, hotspot-control, and hotspot-init.service
 
 set -e
-LOG="/var/log/hotspot-setup.log"
+LOG="/var/log/rpi-hotspot/hotspot-setup.log"
 
 echo "[$(date)] hotspot/setup.sh starting" >> "$LOG"
 

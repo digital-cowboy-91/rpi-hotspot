@@ -3,7 +3,7 @@
 # Removes portal.sh + dispatcher hook
 
 set -e
-LOG="/var/log/portal-uninstall.log"
+LOG="/var/log/rpi-hotspot/portal-uninstall.log"
 
 echo "[$(date)] portal/uninstall.sh starting" >> "$LOG"
 
@@ -14,9 +14,9 @@ rm -f /etc/NetworkManager/dispatcher.d/99-hotspot-portal
 rm -f /usr/local/bin/hotspot-portal
 
 # Remove logs
-rm -f /var/log/portal-setup.log
-rm -f /var/log/portal-uninstall.log
-rm -f /var/log/hotspot-portal.log
-rm -f /var/log/hotspot-portal-dispatcher.log
+rm -f /var/log/rpi-hotspot/portal-setup.log
+rm -f /var/log/rpi-hotspot/portal-uninstall.log
+rm -f /var/log/rpi-hotspot/hotspot-portal.log
+rm -f /var/log/rpi-hotspot/hotspot-portal-dispatcher.log
 
 echo "[$(date)] portal/uninstall.sh completed" >> "$LOG"

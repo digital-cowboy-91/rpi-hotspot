@@ -3,7 +3,7 @@
 # Removes auto.sh + auto.service + auto.timer
 
 set -e
-LOG="/var/log/auto-uninstall.log"
+LOG="/var/log/rpi-hotspot/auto-uninstall.log"
 
 echo "[$(date)] auto/uninstall.sh starting" >> "$LOG"
 
@@ -24,8 +24,8 @@ systemctl daemon-reload
 rm -f /usr/local/bin/hotspot-auto
 
 # Remove logs
-rm -f /var/log/auto-setup.log
-rm -f /var/log/auto-uninstall.log
-rm -f /var/log/hotspot-auto.log
+rm -f /var/log/rpi-hotspot/auto-setup.log
+rm -f /var/log/rpi-hotspot/auto-uninstall.log
+rm -f /var/log/rpi-hotspot/hotspot-auto.log
 
 echo "[$(date)] auto/uninstall.sh completed" >> "$LOG"

@@ -3,7 +3,7 @@
 # Installs the provisioning web UI and its systemd service
 
 set -e
-LOG="/var/log/web-setup.log"
+LOG="/var/log/rpi-hotspot/web-setup.log"
 
 echo "[$(date)] web/setup.sh starting" >> "$LOG"
 

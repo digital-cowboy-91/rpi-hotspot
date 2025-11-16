@@ -1,0 +1,6 @@
+[Unit]
+Description=Clean old RPI Hotspot logs
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/rpi-hotspot-clean-logs

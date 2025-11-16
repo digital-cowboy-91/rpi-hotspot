@@ -7,7 +7,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse
 from datetime import datetime
 
-LOG = "/var/log/hotspot-web.log"
+LOG = "/var/log/rpi-hotspot/hotspot-web.log"
 
 def log(msg):
     with open(LOG, "a") as f:

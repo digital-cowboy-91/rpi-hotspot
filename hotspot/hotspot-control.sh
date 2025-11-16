@@ -2,7 +2,7 @@
 # hotspot/hotspot-control.sh
 # Simple start/stop/status controller for the Hotspot.
 
-LOG="/var/log/hotspot-control.log"
+LOG="/var/log/rpi-hotspot/hotspot-control.log"
 
 echo "[$(date)] Command: $1" >> "$LOG"
 

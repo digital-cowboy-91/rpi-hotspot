@@ -4,7 +4,7 @@
 
 IFACE="$1"
 STATUS="$2"
-LOG="/var/log/hotspot-portal-dispatcher.log"
+LOG="/var/log/rpi-hotspot/hotspot-portal-dispatcher.log"
 
 echo "[$(date)] iface=$IFACE status=$STATUS" >> "$LOG"
 

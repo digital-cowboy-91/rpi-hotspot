@@ -3,7 +3,7 @@
 # Very small WiFi checker for low-RAM devices.
 # If Wi-Fi is NOT connected → start hotspot.
 
-LOG="/var/log/hotspot-auto.log"
+LOG="/var/log/rpi-hotspot/hotspot-auto.log"
 
 echo "[$(date)] Running auto-check" >> "$LOG"
 

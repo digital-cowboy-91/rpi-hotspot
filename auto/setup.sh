@@ -3,7 +3,7 @@
 # Installs auto.sh + auto.service + auto.timer
 
 set -e
-LOG="/var/log/auto-setup.log"
+LOG="/var/log/rpi-hotspot/auto-setup.log"
 
 echo "[$(date)] auto/setup.sh starting" >> "$LOG"
 
