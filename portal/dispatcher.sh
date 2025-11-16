@@ -1,6 +1,4 @@
 #!/bin/bash
-# hotspot/hotspot-portal-dispatcher.sh
-# NetworkManager dispatcher hook for captive portal.
 
 IFACE="$1"
 STATUS="$2"
@@ -8,7 +6,6 @@ LOG="/var/log/rpi-hotspot/hotspot-portal-dispatcher.log"
 
 echo "[$(date)] iface=$IFACE status=$STATUS" >> "$LOG"
 
-# We only care about wlan0
 if [ "$IFACE" != "wlan0" ]; then
     exit 0
 fi

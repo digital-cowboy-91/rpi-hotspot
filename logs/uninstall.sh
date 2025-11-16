@@ -1,6 +1,4 @@
 #!/bin/bash
-# logs/uninstall.sh
-# Removes the log cleanup script, timer, and service
 
 set -e
 LOG="/var/log/rpi-hotspot/logs-uninstall.log"

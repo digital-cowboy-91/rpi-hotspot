@@ -1,6 +1,4 @@
 #!/bin/bash
-# post-install-check.sh
-# Validates that the full installation is running correctly on the system.
 
 set -e
 
@@ -49,7 +47,6 @@ check_active() {
     else fail "Not active: $1"; fi
 }
 
-# Hotspot (oneshot service, should not stay active)
 check_enabled hotspot-init.service
 
 if systemctl is-failed hotspot-init.service >/dev/null 2>&1; then
@@ -58,15 +55,12 @@ else
     ok "hotspot-init.service ran successfully (oneshot)"
 fi
 
-# Auto
 check_enabled hotspot-auto.timer
 check_active hotspot-auto.timer
 
-# Web
 check_enabled hotspot-web.service
 check_active hotspot-web.service
 
-# Logs
 check_enabled rpi-hotspot-clean.timer
 check_active rpi-hotspot-clean.timer
 
@@ -92,7 +86,6 @@ else fail "Log directory missing: $LOG_DIR"; fi
 echo "Checking recent logs..."
 ls -l "$LOG_DIR"
 
-# Basic sanity — logs should not be empty directory
 if [ "$(ls -A "$LOG_DIR")" ]; then
     ok "Log files present"
 else
@@ -118,7 +111,6 @@ echo "----------------------------------------"
 STATE=$(nmcli -t -f DEVICE,STATE d | grep "^wlan0:" || true)
 echo "wlan0 state: $STATE"
 
-# Only informational — not failing
 ok "Hotspot state printed above (expected: connected or disconnected depending on network)."
 
 echo

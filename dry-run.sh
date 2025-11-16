@@ -1,6 +1,4 @@
 #!/bin/bash
-# dry-run.sh
-# Validates the entire project without installing anything.
 
 set -e
 
@@ -40,33 +38,28 @@ check_file() {
     else fail "Missing: $1"; fi
 }
 
-# Hotspot
 check_file hotspot/hotspot-init.sh
 check_file hotspot/hotspot-control.sh
 check_file hotspot/hotspot-init.service
 check_file hotspot/setup.sh
 check_file hotspot/uninstall.sh
 
-# Auto
 check_file auto/auto.sh
 check_file auto/auto.service
 check_file auto/auto.timer
 check_file auto/setup.sh
 check_file auto/uninstall.sh
 
-# Portal
 check_file portal/portal.sh
 check_file portal/dispatcher.sh
 check_file portal/setup.sh
 check_file portal/uninstall.sh
 
-# Web
 check_file web/web.py
 check_file web/web.service
 check_file web/setup.sh
 check_file web/uninstall.sh
 
-# Logs
 check_file logs/clean.sh
 check_file logs/rpi-hotspot-clean.service
 check_file logs/rpi-hotspot-clean.timer
@@ -104,7 +97,6 @@ check_unit auto/auto.timer
 check_unit web/web.service
 check_unit logs/rpi-hotspot-clean.service
 check_unit logs/rpi-hotspot-clean.timer
-# portal has no systemd units, only dispatcher script
 
 echo
 echo "5) Checking log path consistency..."

@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# hotspot/hotspot-web.py
-# Ultra-light WiFi setup web server (no Flask).
 
 import subprocess
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -15,7 +13,6 @@ def log(msg):
 
 class WiFiHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # scan SSIDs
         try:
             result = subprocess.check_output(["nmcli", "-t", "-f", "SSID", "dev", "wifi"])
             lines = result.decode().splitlines()
@@ -24,7 +21,6 @@ class WiFiHandler(BaseHTTPRequestHandler):
             ssids = []
             log(f"WiFi scan failed: {e}")
 
-        # build HTML
         html = "<h1>WiFi Setup</h1>"
         html += "<form method='POST' action='/submit'>"
         html += "<select name='ssid'>"
@@ -61,7 +57,6 @@ class WiFiHandler(BaseHTTPRequestHandler):
 
         log(f"Connect request: ssid='{ssid}'")
 
-        # Remove any existing saved connection with the same name to avoid conflicts.
         delete = subprocess.run(
             ["nmcli", "connection", "delete", "id", ssid],
             capture_output=True,
@@ -102,7 +97,6 @@ class WiFiHandler(BaseHTTPRequestHandler):
         result = subprocess.run(cmd, capture_output=True, text=True)
 
         if result.returncode == 0:
-            # Attempt to bring the new connection up immediately.
             up = subprocess.run(
                 ["nmcli", "connection", "up", ssid],
                 capture_output=True,
