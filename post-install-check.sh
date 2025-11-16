@@ -49,9 +49,14 @@ check_active() {
     else fail "Not active: $1"; fi
 }
 
-# Hotspot
+# Hotspot (oneshot service, should not stay active)
 check_enabled hotspot-init.service
-check_active hotspot-init.service
+
+if systemctl is-failed hotspot-init.service >/dev/null 2>&1; then
+    fail "hotspot-init.service failed during boot"
+else
+    ok "hotspot-init.service ran successfully (oneshot)"
+fi
 
 # Auto
 check_enabled hotspot-auto.timer
