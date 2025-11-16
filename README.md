@@ -74,7 +74,7 @@ Runs every subsystem’s `uninstall.sh`, removes binaries/units, and cleans log 
 
 ## Usage
 
-- The **Hotspot** profile is named `Hotspot`, uses SSID `raspberry-server`, WPA-PSK `Init123*`, and shares `192.168.100.1/24`.
+- The **Hotspot** profile is named `Hotspot`, uses SSID `raspberry-hotspot`, WPA-PSK `Init123*`, and shares `192.168.100.1/24`.
 - The **captive portal** listens on interface `wlan0` and DNATs DNS (53) + HTTP (80) traffic to `192.168.100.1`. Disable it via `/usr/local/bin/hotspot-portal down`.
 - The **web UI** is accessible at `http://192.168.100.1/` when the hotspot is active. Select an SSID, enter a password, and it will create + activate the connection by chaining `nmcli connection add` and `nmcli connection up <SSID>`.
 - The **auto-switcher** keeps polling. Once the Pi successfully connects to a “normal” Wi-Fi network, it stops the hotspot automatically.
