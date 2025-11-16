@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WiFi Setup</title>
+    <link rel="stylesheet" href="/statics/style.css" />
+  </head>
+  <body>
+    <h1>WiFi Setup</h1>
+
+    <form method="POST" action="/submit">
+      <label for="ssid">Select WiFi:</label><br />
+      <select name="ssid" id="ssid">
+        {{options}}
+      </select>
+
+      <br /><br />
+
+      <label>Password:</label><br />
+      <input type="password" name="password" />
+
+      <br /><br />
+      <input type="submit" value="Connect" />
+    </form>
+  </body>
+</html>
