@@ -35,3 +35,6 @@ bash "$REPO_DIR/logs/setup.sh"
 echo "========================================"
 echo " Installation complete!"
 echo "========================================"
+echo ""
+echo "⚠️  Rebooting to activate the hotspot."
+bash reboot
