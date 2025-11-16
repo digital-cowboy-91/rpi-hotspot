@@ -1,6 +1,4 @@
 #!/bin/bash
-# hotspot/hotspot-control.sh
-# Simple start/stop/status controller for the Hotspot.
 
 LOG="/var/log/rpi-hotspot/hotspot-control.log"
 

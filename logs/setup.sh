@@ -1,6 +1,4 @@
 #!/bin/bash
-# logs/setup.sh
-# Installs log cleanup script + service + timer
 
 set -e
 LOG="/var/log/rpi-hotspot/logs-setup.log"
@@ -9,11 +7,9 @@ echo "[$(date)] logs/setup.sh starting" >> "$LOG"
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Install cleanup script
 cp "$REPO_DIR/clean.sh" /usr/local/bin/rpi-hotspot-clean-logs
 chmod +x /usr/local/bin/rpi-hotspot-clean-logs
 
-# Install systemd units
 cp "$REPO_DIR/rpi-hotspot-clean.service" /etc/systemd/system/rpi-hotspot-clean.service
 cp "$REPO_DIR/rpi-hotspot-clean.timer"   /etc/systemd/system/rpi-hotspot-clean.timer
 
