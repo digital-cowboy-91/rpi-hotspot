@@ -5,6 +5,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse
 from datetime import datetime
 import os
+import threading
+import time
 
 LOG = "/var/log/rpi-hotspot/hotspot-web.log"
 
@@ -139,53 +141,60 @@ class WiFiHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(PROCESS_TEMPLATE.encode())
 
-        # ---------------------------------------
-        # Backend work begins AFTER response
-        # ---------------------------------------
-        subprocess.run(
-            ["nmcli", "connection", "delete", "id", ssid],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
+        worker = threading.Thread(
+            target=connect_to_wifi,
+            args=(ssid, password),
+            daemon=True
         )
-
-        cmd = [
-            "nmcli", "connection", "add",
-            "type", "wifi",
-            "ifname", "wlan0",
-            "con-name", ssid,
-            "ssid", ssid
-        ]
-
-        if password:
-            cmd += [
-                "802-11-wireless-security.key-mgmt", "wpa-psk",
-                "802-11-wireless-security.psk", password
-            ]
-        else:
-            cmd += ["802-11-wireless-security.key-mgmt", "none"]
-
-        add = subprocess.run(cmd, capture_output=True, text=True)
-        if add.returncode != 0:
-            log(f"ADD FAILED for {ssid}: {add.stderr.strip()}")
-            return
-
-        # Try activating connection
-        up = subprocess.run(
-            ["nmcli", "connection", "up", ssid],
-            capture_output=True,
-            text=True
-        )
-
-        if up.returncode == 0:
-            log(f"CONNECTED: {ssid}")
-        else:
-            log(f"CONNECT FAIL ({ssid}): {up.stderr.strip()}")
+        worker.start()
 
 
 # ---------------------------------------
 # Run server
 # ---------------------------------------
+def connect_to_wifi(ssid, password):
+    time.sleep(2)
+
+    subprocess.run(
+        ["nmcli", "connection", "delete", "id", ssid],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+
+    cmd = [
+        "nmcli", "connection", "add",
+        "type", "wifi",
+        "ifname", "wlan0",
+        "con-name", ssid,
+        "ssid", ssid
+    ]
+
+    if password:
+        cmd += [
+            "802-11-wireless-security.key-mgmt", "wpa-psk",
+            "802-11-wireless-security.psk", password
+        ]
+    else:
+        cmd += ["802-11-wireless-security.key-mgmt", "none"]
+
+    add = subprocess.run(cmd, capture_output=True, text=True)
+    if add.returncode != 0:
+        log(f"ADD FAILED for {ssid}: {add.stderr.strip()}")
+        return
+
+    up = subprocess.run(
+        ["nmcli", "connection", "up", ssid],
+        capture_output=True,
+        text=True
+    )
+
+    if up.returncode == 0:
+        log(f"CONNECTED: {ssid}")
+    else:
+        log(f"CONNECT FAIL ({ssid}): {up.stderr.strip()}")
+
+
 def run():
     server = HTTPServer(("0.0.0.0", 80), WiFiHandler)
     log("Web UI starting on :80")
