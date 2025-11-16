@@ -57,7 +57,7 @@ class WiFiHandler(BaseHTTPRequestHandler):
 
         log(f"Connect request: ssid='{ssid}'")
 
-        add_cmd = [
+        cmd = [
             "nmcli",
             "connection",
             "add",
@@ -72,14 +72,14 @@ class WiFiHandler(BaseHTTPRequestHandler):
         ]
 
         if password:
-            add_cmd += [
+            cmd += [
                 "802-11-wireless-security.key-mgmt",
                 "wpa-psk",
                 "802-11-wireless-security.psk",
                 password,
             ]
         else:
-            add_cmd += [
+            cmd += [
                 "802-11-wireless-security.key-mgmt",
                 "none",
             ]
