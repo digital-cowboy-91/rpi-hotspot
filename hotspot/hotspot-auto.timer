@@ -1,0 +1,9 @@
+[Unit]
+Description=Run auto hotspot checker every 15 seconds
+
+[Timer]
+OnBootSec=20
+OnUnitActiveSec=15
+
+[Install]
+WantedBy=timers.target

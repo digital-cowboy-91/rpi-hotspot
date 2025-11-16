@@ -1,0 +1,6 @@
+[Unit]
+Description=Auto hotspot checker
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/hotspot-auto

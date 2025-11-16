@@ -30,7 +30,28 @@ echo "[$(date)] Installing hotspot-init.service" >> "$LOG"
 cp "$REPO_DIR/hotspot-init.service" /etc/systemd/system/hotspot-init.service
 chmod 644 /etc/systemd/system/hotspot-init.service
 
+# ---------------------------------------------------------
+# Install hotspot-auto script
+# ---------------------------------------------------------
+echo "[$(date)] Installing hotspot-auto" >> "$LOG"
+cp "$REPO_DIR/hotspot-auto.sh" /usr/local/bin/hotspot-auto
+chmod +x /usr/local/bin/hotspot-auto
+
+# ---------------------------------------------------------
+# Install auto hotspot systemd service + timer
+# ---------------------------------------------------------
+echo "[$(date)] Installing hotspot-auto.service & timer" >> "$LOG"
+cp "$REPO_DIR/hotspot-auto.service" /etc/systemd/system/hotspot-auto.service
+cp "$REPO_DIR/hotspot-auto.timer" /etc/systemd/system/hotspot-auto.timer
+
+chmod 644 /etc/systemd/system/hotspot-auto.service
+chmod 644 /etc/systemd/system/hotspot-auto.timer
+
+# ---------------------------------------------------------
+# Enable services
+# ---------------------------------------------------------
 systemctl daemon-reload
 systemctl enable hotspot-init.service
+systemctl enable --now hotspot-auto.timer
 
 echo "[$(date)] hotspot-setup completed" >> "$LOG"
