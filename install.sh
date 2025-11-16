@@ -2,21 +2,28 @@
 set -e
 
 echo "========================================"
-echo "      RPI Hotspot — Installation"
+echo "        RPI Hotspot — Install"
 echo "========================================"
 
-# Directory of this repo
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "[*] Updating apt..."
 apt-get update -y
 
 echo "[*] Installing dependencies..."
-# python3-venv is omitted (not needed)
 apt-get install -y python3 network-manager nftables
 
-echo "[*] Running hotspot setup..."
-bash "$REPO_DIR/hotspot/hotspot-setup.sh"
+echo "[*] Installing hotspot..."
+bash "$REPO_DIR/hotspot/setup.sh"
+
+echo "[*] Installing auto-switcher..."
+bash "$REPO_DIR/auto/setup.sh"
+
+echo "[*] Installing captive portal..."
+bash "$REPO_DIR/portal/setup.sh"
+
+echo "[*] Installing web UI..."
+bash "$REPO_DIR/web/setup.sh"
 
 echo "========================================"
 echo " Installation complete!"
