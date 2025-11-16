@@ -13,6 +13,12 @@ chmod +x /usr/local/bin/hotspot-web.py
 cp "$REPO_DIR/web.service" /etc/systemd/system/hotspot-web.service
 chmod 644 /etc/systemd/system/hotspot-web.service
 
+rm -rf /usr/local/bin/hotspot-web-templates
+cp -r "$REPO_DIR/templates" /usr/local/bin/hotspot-web-templates
+
+rm -rf /usr/local/bin/hotspot-web-statics
+cp -r "$REPO_DIR/statics" /usr/local/bin/hotspot-web-statics
+
 systemctl daemon-reload
 systemctl enable hotspot-web.service
 
