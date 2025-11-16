@@ -107,7 +107,7 @@ class WiFiHandler(BaseHTTPRequestHandler):
         html = INDEX_TEMPLATE.replace("{{options}}", options)
 
         self.send_response(200)
-        self.send_header("Content-Type", "text/html")
+        self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
         self.wfile.write(html.encode())
 
@@ -137,7 +137,7 @@ class WiFiHandler(BaseHTTPRequestHandler):
         # Serve processing screen immediately
         # ---------------------------------------
         self.send_response(200)
-        self.send_header("Content-Type", "text/html")
+        self.send_header("Content-Type", "text/html; charset=utf-8")
         self.end_headers()
         self.wfile.write(PROCESS_TEMPLATE.encode())
 
