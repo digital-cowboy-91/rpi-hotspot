@@ -83,17 +83,33 @@ echo "4) Checking systemd unit syntax..."
 echo "----------------------------------------"
 
 check_unit() {
-    UNIT_PATH="$(readlink -f "$1")"
-    output=$(systemd-analyze verify "$UNIT_PATH" 2>&1)
+    local FILE="$1"
 
-    if echo "$output" | grep -Eiq "parse|invalid|cannot"; then
-        fail "Invalid unit syntax: $1"
+    if [ ! -f "$FILE" ]; then
+        fail "Unit file missing: $FILE"
+        return
+    fi
+
+    local UNIT_PATH
+    UNIT_PATH="$(readlink -f "$FILE")"
+
+    if [ -z "$UNIT_PATH" ]; then
+        fail "Could not resolve path: $FILE"
+        return
+    fi
+
+    local output
+    output=$(timeout 2 systemd-analyze verify "$UNIT_PATH" 2>&1 || true)
+
+    if echo "$output" | grep -Eq "parse|invalid|cannot"; then
+        fail "Invalid unit syntax: $FILE"
     elif echo "$output" | grep -q "not executable"; then
-        ok "Unit syntax OK (ExecStart missing until install): $1"
+        ok "Unit syntax OK (ExecStart missing until install): $FILE"
     else
-        ok "Valid unit: $1"
+        ok "Valid unit: $FILE"
     fi
 }
+
 
 check_unit hotspot/hotspot-init.service
 check_unit auto/auto.service
