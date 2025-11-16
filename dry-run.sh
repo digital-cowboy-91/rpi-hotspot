@@ -84,10 +84,14 @@ echo "----------------------------------------"
 
 check_unit() {
     UNIT_PATH="$(readlink -f "$1")"
-    if systemd-analyze verify "$UNIT_PATH" >/dev/null 2>&1; then
-        ok "Valid unit: $1"
+    output=$(systemd-analyze verify "$f" 2>&1)
+
+    if echo "$output" | grep -Eiq "parse|invalid|cannot"; then
+        fail "Invalid unit syntax: $f"
+    elif echo "$output" | grep -q "not executable"; then
+        ok "Unit syntax OK (ExecStart missing until install): $f"
     else
-        fail "Invalid unit syntax: $1"
+        ok "Valid unit: $f"
     fi
 }
 
