@@ -1,0 +1,10 @@
+[Unit]
+Description=Initialize NetworkManager Hotspot profile
+After=NetworkManager.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/hotspot-init
+
+[Install]
+WantedBy=multi-user.target
