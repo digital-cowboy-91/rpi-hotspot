@@ -30,6 +30,9 @@ echo "[$(date)] Installing hotspot-init.service" >> "$LOG"
 cp "$REPO_DIR/hotspot-init.service" /etc/systemd/system/hotspot-init.service
 chmod 644 /etc/systemd/system/hotspot-init.service
 
+systemctl daemon-reload
+systemctl enable hotspot-init.service
+
 # ---------------------------------------------------------
 # Install hotspot-auto script
 # ---------------------------------------------------------
@@ -47,6 +50,9 @@ cp "$REPO_DIR/hotspot-auto.timer" /etc/systemd/system/hotspot-auto.timer
 chmod 644 /etc/systemd/system/hotspot-auto.service
 chmod 644 /etc/systemd/system/hotspot-auto.timer
 
+systemctl daemon-reload
+systemctl enable --now hotspot-auto.timer
+
 # ---------------------------------------------------------
 # Install hotspot-portal script
 # ---------------------------------------------------------
@@ -62,10 +68,20 @@ cp "$REPO_DIR/hotspot-portal-dispatcher.sh" /etc/NetworkManager/dispatcher.d/99-
 chmod +x /etc/NetworkManager/dispatcher.d/99-hotspot-portal
 
 # ---------------------------------------------------------
-# Enable services
+# Install WiFi provisioning web UI
 # ---------------------------------------------------------
+echo "[$(date)] Installing hotspot-web" >> "$LOG"
+cp "$REPO_DIR/hotspot-web.py" /usr/local/bin/hotspot-web.py
+chmod +x /usr/local/bin/hotspot-web.py
+
+# ---------------------------------------------------------
+# Install hotspot-web systemd service
+# ---------------------------------------------------------
+echo "[$(date)] Installing hotspot-web.service" >> "$LOG"
+cp "$REPO_DIR/hotspot-web.service" /etc/systemd/system/hotspot-web.service
+chmod 644 /etc/systemd/system/hotspot-web.service
+
 systemctl daemon-reload
-systemctl enable hotspot-init.service
-systemctl enable --now hotspot-auto.timer
+systemctl enable hotspot-web.service
 
 echo "[$(date)] hotspot-setup completed" >> "$LOG"
