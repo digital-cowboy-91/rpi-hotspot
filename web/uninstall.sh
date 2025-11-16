@@ -14,6 +14,9 @@ systemctl daemon-reload
 
 rm -f /usr/local/bin/hotspot-web.py
 
+rm -rf /usr/local/bin/hotspot-web-templates
+rm -rf /usr/local/bin/hotspot-web-statics
+
 rm -f /var/log/rpi-hotspot/web-setup.log
 rm -f /var/log/rpi-hotspot/web-uninstall.log
 rm -f /var/log/rpi-hotspot/hotspot-web.log
