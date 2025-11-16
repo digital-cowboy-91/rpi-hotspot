@@ -48,6 +48,13 @@ chmod 644 /etc/systemd/system/hotspot-auto.service
 chmod 644 /etc/systemd/system/hotspot-auto.timer
 
 # ---------------------------------------------------------
+# Install hotspot-portal script
+# ---------------------------------------------------------
+echo "[$(date)] Installing hotspot-portal" >> "$LOG"
+cp "$REPO_DIR/hotspot-portal.sh" /usr/local/bin/hotspot-portal
+chmod +x /usr/local/bin/hotspot-portal
+
+# ---------------------------------------------------------
 # Enable services
 # ---------------------------------------------------------
 systemctl daemon-reload
