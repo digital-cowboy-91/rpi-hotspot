@@ -55,7 +55,22 @@ class WiFiHandler(BaseHTTPRequestHandler):
         ssid = fields.get("ssid", [""])[0]
         password = fields.get("password", [""])[0]
 
+        if not ssid:
+            self.send_error(400, "SSID is required")
+            return
+
         log(f"Connect request: ssid='{ssid}'")
+
+        # Remove any existing saved connection with the same name to avoid conflicts.
+        delete = subprocess.run(
+            ["nmcli", "connection", "delete", "id", ssid],
+            capture_output=True,
+            text=True,
+        )
+        if delete.returncode == 0:
+            log(f"Removed existing connection profile for '{ssid}'")
+        elif delete.returncode not in (0, 10):  # 10 = no connection with that name
+            log(f"Warning: failed to delete old profile for '{ssid}': {delete.stderr.strip()}")
 
         cmd = [
             "nmcli",
@@ -85,12 +100,29 @@ class WiFiHandler(BaseHTTPRequestHandler):
             ]
 
         result = subprocess.run(cmd, capture_output=True, text=True)
-        success = (result.returncode == 0)
+
+        if result.returncode == 0:
+            # Attempt to bring the new connection up immediately.
+            up = subprocess.run(
+                ["nmcli", "connection", "up", ssid],
+                capture_output=True,
+                text=True,
+            )
+            success = (up.returncode == 0)
+            output = up.stdout if success else up.stderr
+            if success:
+                log(f"Connection '{ssid}' activated successfully")
+            else:
+                log(f"Failed to activate '{ssid}': {up.stderr.strip()}")
+        else:
+            success = False
+            output = result.stderr
+            log(f"Failed to add connection '{ssid}': {result.stderr.strip()}")
 
         if success:
-            html = "<h1>Success!</h1><pre>{}</pre>".format(result.stdout)
+            html = "<h1>Success!</h1><pre>{}</pre>".format(output)
         else:
-            html = "<h1>Failed</h1><pre>{}</pre>".format(result.stderr)
+            html = "<h1>Failed</h1><pre>{}</pre>".format(output)
 
         self.send_response(200)
         self.send_header("Content-Type", "text/html")
