@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Configuring WiFi…</title>
+    <title>Configuring WiFi</title>
     <link rel="stylesheet" href="/statics/style.css" />
   </head>
   <body>
@@ -11,5 +11,28 @@
       Watch your WiFi networks. If the hotspot reappears, the connection failed
       and you can reconnect to this setup page to try again.
     </p>
+    <script>
+      const pollDelayMs = 5000;
+      const retryDelayMs = 1000;
+      let pollTimeout = null;
+
+      function pollForReturn() {
+        fetch("/", { cache: "no-cache" })
+          .then(() => {
+            window.location.replace("/");
+          })
+          .catch(() => {
+            pollTimeout = setTimeout(pollForReturn, retryDelayMs);
+          });
+      }
+
+      pollTimeout = setTimeout(pollForReturn, pollDelayMs);
+
+      window.addEventListener("beforeunload", () => {
+        if (pollTimeout) {
+          clearTimeout(pollTimeout);
+        }
+      });
+    </script>
   </body>
 </html>
