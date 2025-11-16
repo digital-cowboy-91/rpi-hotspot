@@ -1,6 +1,10 @@
 [Unit]
 Description=Auto hotspot checker
+After=network.target
 
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/hotspot-auto
+
+[Install]
+WantedBy=multi-user.target
