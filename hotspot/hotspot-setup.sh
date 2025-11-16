@@ -55,6 +55,13 @@ cp "$REPO_DIR/hotspot-portal.sh" /usr/local/bin/hotspot-portal
 chmod +x /usr/local/bin/hotspot-portal
 
 # ---------------------------------------------------------
+# Install NetworkManager dispatcher hook for captive portal
+# ---------------------------------------------------------
+echo "[$(date)] Installing hotspot-portal dispatcher" >> "$LOG"
+cp "$REPO_DIR/hotspot-portal-dispatcher.sh" /etc/NetworkManager/dispatcher.d/99-hotspot-portal
+chmod +x /etc/NetworkManager/dispatcher.d/99-hotspot-portal
+
+# ---------------------------------------------------------
 # Enable services
 # ---------------------------------------------------------
 systemctl daemon-reload
