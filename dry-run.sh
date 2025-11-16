@@ -90,7 +90,8 @@ echo "4) Checking systemd unit syntax..."
 echo "----------------------------------------"
 
 check_unit() {
-    if systemd-analyze verify "$1" >/dev/null 2>&1; then
+    UNIT_PATH="$(readlink -f "$1")"
+    if systemd-analyze verify "$UNIT_PATH" >/dev/null 2>&1; then
         ok "Valid unit: $1"
     else
         fail "Invalid unit syntax: $1"
