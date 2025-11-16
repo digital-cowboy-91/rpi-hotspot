@@ -12,11 +12,33 @@ STATUS=$(nmcli -t -f DEVICE,STATE,CONNECTION dev status | grep "^wlan0:" || true
 STATE=$(echo "$STATUS" | cut -d: -f2)
 CONNECTION=$(echo "$STATUS" | cut -d: -f3)
 
-# Treat wlan0 as "needs hotspot" when it's not connected OR it's only running our Hotspot profile
-if [ "$STATE" != "connected" ] || [ "$CONNECTION" = "Hotspot" ] || [ -z "$CONNECTION" ] || [ "$CONNECTION" = "--" ]; then
-    echo "[$(date)] WiFi DOWN/Hotspot-needed (state=$STATE conn=$CONNECTION) → starting hotspot" >> "$LOG"
-    /usr/local/bin/hotspot-control start >> "$LOG" 2>&1
+# Determine if wlan0 is connected to a non-hotspot network
+if [ "$STATE" = "connected" ] && [ -n "$CONNECTION" ] && [ "$CONNECTION" != "--" ] && [ "$CONNECTION" != "Hotspot" ]; then
+    WIFI_OK=1
 else
-    echo "[$(date)] WiFi OK on '$CONNECTION' → stopping hotspot (if active)" >> "$LOG"
-    /usr/local/bin/hotspot-control stop >> "$LOG" 2>&1
+    WIFI_OK=0
+fi
+
+# Track whether the hotspot connection is currently active
+if nmcli -t -f NAME connection show --active | grep -qx "Hotspot"; then
+    HOTSPOT_ACTIVE=1
+else
+    HOTSPOT_ACTIVE=0
+fi
+
+if [ "$WIFI_OK" -eq 1 ]; then
+    if [ "$HOTSPOT_ACTIVE" -eq 1 ]; then
+        echo "[$(date)] WiFi OK on '$CONNECTION' → stopping hotspot" >> "$LOG"
+        /usr/local/bin/hotspot-control stop >> "$LOG" 2>&1
+    else
+        echo "[$(date)] WiFi OK on '$CONNECTION' → hotspot already off" >> "$LOG"
+    fi
+    exit 0
+fi
+
+if [ "$HOTSPOT_ACTIVE" -eq 1 ]; then
+    echo "[$(date)] WiFi missing; hotspot already running" >> "$LOG"
+else
+    echo "[$(date)] WiFi missing; starting hotspot" >> "$LOG"
+    /usr/local/bin/hotspot-control start >> "$LOG" 2>&1
 fi
