@@ -57,9 +57,32 @@ class WiFiHandler(BaseHTTPRequestHandler):
 
         log(f"Connect request: ssid='{ssid}'")
 
-        cmd = ["nmcli", "device", "wifi", "connect", ssid]
+        add_cmd = [
+            "nmcli",
+            "connection",
+            "add",
+            "type",
+            "wifi",
+            "ifname",
+            "wlan0",
+            "con-name",
+            ssid,
+            "ssid",
+            ssid,
+        ]
+
         if password:
-            cmd += ["password", password]
+            add_cmd += [
+                "802-11-wireless-security.key-mgmt",
+                "wpa-psk",
+                "802-11-wireless-security.psk",
+                password,
+            ]
+        else:
+            add_cmd += [
+                "802-11-wireless-security.key-mgmt",
+                "none",
+            ]
 
         result = subprocess.run(cmd, capture_output=True, text=True)
         success = (result.returncode == 0)
