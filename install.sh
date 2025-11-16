@@ -36,5 +36,5 @@ echo "========================================"
 echo " Installation complete!"
 echo "========================================"
 echo ""
-echo "⚠️  Rebooting to activate the hotspot."
-bash reboot
+echo "⚠️  A reboot is required to activate the hotspot."
+echo "Run: sudo reboot"
